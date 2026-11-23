@@ -44,7 +44,7 @@ public class PatientService {
 
     // 2. getPatientAppointment
     @Transactional(readOnly = true)
-    public ResponseEntity> getPatientAppointment(Long id, String token) {
+    public ResponseEntity<?> getPatientAppointment(Long id, String token) {
         Map<String, Object> response = new HashMap<>();
         try {
             String email = tokenService.extractEmail(token);
@@ -69,7 +69,7 @@ public class PatientService {
 
     // 3. filterByCondition
     @Transactional(readOnly = true)
-    public ResponseEntity> filterByCondition(String condition, Long id) {
+    public ResponseEntity<?> filterByCondition(String condition, Long id) {
         Map<String, Object> response = new HashMap<>();
         try {
             int status;
@@ -96,7 +96,7 @@ public class PatientService {
 
     // 4. filterByDoctor
     @Transactional(readOnly = true)
-    public ResponseEntity> filterByDoctor(String name, Long patientId) {
+    public ResponseEntity<?> filterByDoctor(String name, Long patientId) {
         Map<String, Object> response = new HashMap<>();
         try {
             List<Appointment> appointments = appointmentRepository.filterByDoctorNameAndPatientId(name, patientId);
@@ -113,7 +113,7 @@ public class PatientService {
 
     // 5. filterByDoctorAndCondition
     @Transactional(readOnly = true)
-    public ResponseEntity> filterByDoctorAndCondition(String condition, String name, long patientId) {
+    public ResponseEntity<?> filterByDoctorAndCondition(String condition, String name, long patientId) {
         Map<String, Object> response = new HashMap<>();
         try {
             int status;
@@ -140,7 +140,7 @@ public class PatientService {
 
     // 6. getPatientDetails
     @Transactional(readOnly = true)
-    public ResponseEntity> getPatientDetails(String token) {
+    public ResponseEntity<?> getPatientDetails(String token) {
         Map<String, Object> response = new HashMap<>();
         try {
             String email = tokenService.extractEmail(token);

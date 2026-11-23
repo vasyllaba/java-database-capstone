@@ -26,12 +26,12 @@ public class AppointmentController {
     }
 
     @GetMapping("/{date}/{patientName}/{token}")
-    public ResponseEntity> getAppointments(
+    public ResponseEntity<?> getAppointments(
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             @PathVariable String patientName,
             @PathVariable String token) {
 
-        ResponseEntity> tokenValidation = service.validateToken(token, "doctor");
+        ResponseEntity<?> tokenValidation = service.validateToken(token, "doctor");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
             Map<String, Object> errorResponse = new HashMap<>(tokenValidation.getBody());
             return new ResponseEntity<>(errorResponse, tokenValidation.getStatusCode());
@@ -42,11 +42,11 @@ public class AppointmentController {
     }
 
     @PostMapping("/{token}")
-    public ResponseEntity> bookAppointment(
+    public ResponseEntity<?> bookAppointment(
             @RequestBody Appointment appointment,
             @PathVariable String token) {
 
-        ResponseEntity> tokenValidation = service.validateToken(token, "patient");
+        ResponseEntity<?> tokenValidation = service.validateToken(token, "patient");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
             return tokenValidation;
         }
@@ -73,11 +73,11 @@ public class AppointmentController {
     }
 
     @PutMapping("/{token}")
-    public ResponseEntity> updateAppointment(
+    public ResponseEntity<?> updateAppointment(
             @RequestBody Appointment appointment,
             @PathVariable String token) {
 
-        ResponseEntity> tokenValidation = service.validateToken(token, "patient");
+        ResponseEntity<?> tokenValidation = service.validateToken(token, "patient");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
             return tokenValidation;
         }
@@ -86,11 +86,11 @@ public class AppointmentController {
     }
 
     @DeleteMapping("/{id}/{token}")
-    public ResponseEntity> cancelAppointment(
+    public ResponseEntity<?> cancelAppointment(
             @PathVariable long id,
             @PathVariable String token) {
 
-        ResponseEntity> tokenValidation = service.validateToken(token, "patient");
+        ResponseEntity<?> tokenValidation = service.validateToken(token, "patient");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
             return tokenValidation;
         }

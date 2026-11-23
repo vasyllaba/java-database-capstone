@@ -16,7 +16,7 @@ public class DashboardController {
 
     @GetMapping("/adminDashboard/{token}")
     public String adminDashboard(@PathVariable String token) {
-        ResponseEntity> response = service.validateToken(token, "admin");
+        ResponseEntity<?> response = service.validateToken(token, "admin");
         if (response.getStatusCode().is2xxSuccessful()) {
             return "admin/adminDashboard";
         }
@@ -25,7 +25,7 @@ public class DashboardController {
 
     @GetMapping("/doctorDashboard/{token}")
     public String doctorDashboard(@PathVariable String token) {
-        ResponseEntity> response = service.validateToken(token, "doctor");
+        ResponseEntity<?> response = service.validateToken(token, "doctor");
         if (response.getStatusCode().is2xxSuccessful()) {
             return "doctor/doctorDashboard";
         }

@@ -24,8 +24,8 @@ public class PatientController {
     }
 
     @GetMapping("/{token}")
-    public ResponseEntity> getPatient(@PathVariable String token) {
-        ResponseEntity> tokenValidation = service.validateToken(token, "patient");
+    public ResponseEntity<?> getPatient(@PathVariable String token) {
+        ResponseEntity<?> tokenValidation = service.validateToken(token, "patient");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
             Map<String, Object> errorResponse = new HashMap<>(tokenValidation.getBody());
             return new ResponseEntity<>(errorResponse, tokenValidation.getStatusCode());
@@ -35,7 +35,7 @@ public class PatientController {
     }
 
     @PostMapping
-    public ResponseEntity> createPatient(@RequestBody Patient patient) {
+    public ResponseEntity<?> createPatient(@RequestBody Patient patient) {
         Map<String, String> response = new HashMap<>();
 
         boolean isNewPatient = service.validatePatient(patient);
@@ -55,16 +55,16 @@ public class PatientController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity> login(@RequestBody Login login) {
+    public ResponseEntity<?> login(@RequestBody Login login) {
         return service.validatePatientLogin(login);
     }
 
     @GetMapping("/{id}/{token}")
-    public ResponseEntity> getPatientAppointment(
+    public ResponseEntity<?> getPatientAppointment(
             @PathVariable Long id,
             @PathVariable String token) {
 
-        ResponseEntity> tokenValidation = service.validateToken(token, "patient");
+        ResponseEntity<?> tokenValidation = service.validateToken(token, "patient");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
             Map<String, Object> errorResponse = new HashMap<>(tokenValidation.getBody());
             return new ResponseEntity<>(errorResponse, tokenValidation.getStatusCode());
@@ -74,12 +74,12 @@ public class PatientController {
     }
 
     @GetMapping("/filter/{condition}/{name}/{token}")
-    public ResponseEntity> filterPatientAppointment(
+    public ResponseEntity<?> filterPatientAppointment(
             @PathVariable String condition,
             @PathVariable String name,
             @PathVariable String token) {
 
-        ResponseEntity> tokenValidation = service.validateToken(token, "patient");
+        ResponseEntity<?> tokenValidation = service.validateToken(token, "patient");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
             Map<String, Object> errorResponse = new HashMap<>(tokenValidation.getBody());
             return new ResponseEntity<>(errorResponse, tokenValidation.getStatusCode());

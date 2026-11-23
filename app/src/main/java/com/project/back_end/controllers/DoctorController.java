@@ -27,13 +27,13 @@ public class DoctorController {
     }
 
     @GetMapping("/availability/{user}/{doctorId}/{date}/{token}")
-    public ResponseEntity> getDoctorAvailability(
+    public ResponseEntity<?> getDoctorAvailability(
             @PathVariable String user,
             @PathVariable Long doctorId,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             @PathVariable String token) {
 
-        ResponseEntity> tokenValidation = service.validateToken(token, user);
+        ResponseEntity<?> tokenValidation = service.validateToken(token, user);
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
             Map<String, Object> errorResponse = new HashMap<>(tokenValidation.getBody());
             return new ResponseEntity<>(errorResponse, tokenValidation.getStatusCode());
@@ -46,7 +46,7 @@ public class DoctorController {
     }
 
     @GetMapping
-    public ResponseEntity> getDoctor() {
+    public ResponseEntity<?> getDoctor() {
         List<Doctor> doctors = doctorService.getDoctors();
         Map<String, Object> response = new HashMap<>();
         response.put("doctors", doctors);
@@ -54,11 +54,11 @@ public class DoctorController {
     }
 
     @PostMapping("/{token}")
-    public ResponseEntity> saveDoctor(
+    public ResponseEntity<?> saveDoctor(
             @RequestBody Doctor doctor,
             @PathVariable String token) {
 
-        ResponseEntity> tokenValidation = service.validateToken(token, "admin");
+        ResponseEntity<?> tokenValidation = service.validateToken(token, "admin");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
             return tokenValidation;
         }
@@ -79,16 +79,16 @@ public class DoctorController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity> doctorLogin(@RequestBody Login login) {
+    public ResponseEntity<?> doctorLogin(@RequestBody Login login) {
         return doctorService.validateDoctor(login);
     }
 
     @PutMapping("/{token}")
-    public ResponseEntity> updateDoctor(
+    public ResponseEntity<?> updateDoctor(
             @RequestBody Doctor doctor,
             @PathVariable String token) {
 
-        ResponseEntity> tokenValidation = service.validateToken(token, "admin");
+        ResponseEntity<?> tokenValidation = service.validateToken(token, "admin");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
             return tokenValidation;
         }
@@ -109,11 +109,11 @@ public class DoctorController {
     }
 
     @DeleteMapping("/{id}/{token}")
-    public ResponseEntity> deleteDoctor(
+    public ResponseEntity<?> deleteDoctor(
             @PathVariable long id,
             @PathVariable String token) {
 
-        ResponseEntity> tokenValidation = service.validateToken(token, "admin");
+        ResponseEntity<?> tokenValidation = service.validateToken(token, "admin");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
             return tokenValidation;
         }
@@ -134,7 +134,7 @@ public class DoctorController {
     }
 
     @GetMapping("/filter/{name}/{time}/{speciality}")
-    public ResponseEntity> filter(
+    public ResponseEntity<?> filter(
             @PathVariable String name,
             @PathVariable String time,
             @PathVariable String speciality) {

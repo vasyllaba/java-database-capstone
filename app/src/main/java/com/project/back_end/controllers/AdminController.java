@@ -23,7 +23,7 @@ public class AdminController {
 
     // 3. Define the adminLogin Method
     @PostMapping
-    public ResponseEntity> adminLogin(@RequestBody Admin admin) {
+    public ResponseEntity<?> adminLogin(@RequestBody Admin admin) {
         return service.validateAdmin(admin);
     }
 }

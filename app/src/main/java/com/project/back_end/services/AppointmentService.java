@@ -8,9 +8,7 @@ import com.project.back_end.repo.DoctorRepository;
 import com.project.back_end.repo.PatientRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.project.back_end.services.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Service
+@org.springframework.stereotype.Service
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
@@ -53,7 +51,7 @@ public class AppointmentService {
     }
 
     @Transactional
-    public ResponseEntity> updateAppointment(Appointment appointment) {
+    public ResponseEntity<?> updateAppointment(Appointment appointment) {
         Map<String, String> response = new HashMap<>();
 
         Optional<Appointment> existingOpt = appointmentRepository.findById(appointment.getId());
@@ -96,7 +94,7 @@ public class AppointmentService {
     }
 
     @Transactional
-    public ResponseEntity> cancelAppointment(long id, String token) {
+    public ResponseEntity<?> cancelAppointment(long id, String token) {
         Map<String, String> response = new HashMap<>();
 
         Optional<Appointment> existingOpt = appointmentRepository.findById(id);

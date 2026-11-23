@@ -119,7 +119,7 @@ public class DoctorService {
     }
 
     // 9. validateDoctor Method
-    public ResponseEntity> validateDoctor(Login login) {
+    public ResponseEntity<?> validateDoctor(Login login) {
         Map<String, String> response = new HashMap<>();
         Doctor doctor = doctorRepository.findByEmail(login.getEmail());
 

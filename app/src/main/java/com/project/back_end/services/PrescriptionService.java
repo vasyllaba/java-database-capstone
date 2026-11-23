@@ -19,7 +19,7 @@ public class PrescriptionService {
         this.prescriptionRepository = prescriptionRepository;
     }
 
-    public ResponseEntity> savePrescription(Prescription prescription) {
+    public ResponseEntity<?> savePrescription(Prescription prescription) {
         Map<String, String> response = new HashMap<>();
         try {
             List<Prescription> existing = prescriptionRepository.findByAppointmentId(prescription.getAppointmentId());
@@ -38,7 +38,7 @@ public class PrescriptionService {
         }
     }
 
-    public ResponseEntity> getPrescription(Long appointmentId) {
+    public ResponseEntity<?> getPrescription(Long appointmentId) {
         Map<String, Object> response = new HashMap<>();
         try {
             List<Prescription> prescriptions = prescriptionRepository.findByAppointmentId(appointmentId);

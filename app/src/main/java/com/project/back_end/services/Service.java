@@ -42,7 +42,7 @@ public class Service {
     }
 
     // 3. validateToken Method
-    public ResponseEntity> validateToken(String token, String user) {
+    public ResponseEntity<Map<String, String>> validateToken(String token, String user) {
         Map<String, String> response = new HashMap<>();
         try {
             boolean isValid = tokenService.validateToken(token, user);
@@ -58,7 +58,7 @@ public class Service {
     }
 
     // 4. validateAdmin Method
-    public ResponseEntity> validateAdmin(Admin receivedAdmin) {
+    public ResponseEntity<?> validateAdmin(Admin receivedAdmin) {
         Map<String, String> response = new HashMap<>();
         try {
             Admin admin = adminRepository.findByUsername(receivedAdmin.getUsername());
@@ -136,7 +136,7 @@ public class Service {
     }
 
     // 8. validatePatientLogin Method
-    public ResponseEntity> validatePatientLogin(Login login) {
+    public ResponseEntity<?> validatePatientLogin(Login login) {
         Map<String, String> response = new HashMap<>();
         try {
             Patient patient = patientRepository.findByEmail(login.getEmail());
@@ -156,7 +156,7 @@ public class Service {
     }
 
     // 9. filterPatient Method
-    public ResponseEntity> filterPatient(String condition, String name, String token) {
+    public ResponseEntity<?> filterPatient(String condition, String name, String token) {
         Map<String, Object> response = new HashMap<>();
         try {
             String email = tokenService.extractEmail(token);

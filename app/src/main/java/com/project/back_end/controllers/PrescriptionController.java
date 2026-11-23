@@ -27,16 +27,16 @@ public class PrescriptionController {
     }
 
     @PostMapping("/{token}")
-    public ResponseEntity> savePrescription(
+    public ResponseEntity<?> savePrescription(
             @Valid @RequestBody Prescription prescription,
             @PathVariable String token) {
 
-        ResponseEntity> tokenValidation = service.validateToken(token, "doctor");
+        ResponseEntity<?> tokenValidation = service.validateToken(token, "doctor");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
             return tokenValidation;
         }
 
-        ResponseEntity> saveResponse = prescriptionService.savePrescription(prescription);
+        ResponseEntity<?> saveResponse = prescriptionService.savePrescription(prescription);
         
         if (saveResponse.getStatusCode().is2xxSuccessful() && prescription.getAppointmentId() != null) {
             appointmentService.changeStatus(1, prescription.getAppointmentId());
@@ -46,11 +46,11 @@ public class PrescriptionController {
     }
 
     @GetMapping("/{appointmentId}/{token}")
-    public ResponseEntity> getPrescription(
+    public ResponseEntity<?> getPrescription(
             @PathVariable Long appointmentId,
             @PathVariable String token) {
 
-        ResponseEntity> tokenValidation = service.validateToken(token, "doctor");
+        ResponseEntity<?> tokenValidation = service.validateToken(token, "doctor");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
             Map<String, Object> errorResponse = new HashMap<>(tokenValidation.getBody());
             return new ResponseEntity<>(errorResponse, tokenValidation.getStatusCode());
