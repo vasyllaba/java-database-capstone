@@ -38,7 +38,7 @@ async function filterDoctorsOnChange() {
     try {
         const response = await filterDoctors(name, time, specialty);
         // Note: checking if response has a 'doctors' property, or if it is the array itself
-        const doctors = response.doctors || response; 
+        const doctors = Array.isArray(response) ? response : (response?.doctors || []);
         
         renderDoctorCards(doctors);
     } catch (error) {

@@ -56,7 +56,8 @@ async function filterDoctorsOnChange() {
     const specialty = specialtyFilter && specialtyFilter.value ? specialtyFilter.value : null;
 
     try {
-        const filteredDoctors = await filterDoctors(name, time, specialty);
+        const response = await filterDoctors(name, time, specialty);
+        const filteredDoctors = Array.isArray(response) ? response : (response?.doctors || []);
         
         if (filteredDoctors && filteredDoctors.length > 0) {
             renderDoctorCards(filteredDoctors);
@@ -85,6 +86,14 @@ window.adminAddDoctor = async function(event) {
     // Collect checkbox values for available times
     const timeCheckboxes = document.querySelectorAll('input[name="docAvailability"]:checked');
     const availableTimes = Array.from(timeCheckboxes).map(cb => cb.value);
+
+    if (!name || name.trim().length < 3 || !specialty || !email ||
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
+        !password || password.length < 6 || !/^\d{10}$/.test(phone || "") ||
+        availableTimes.length === 0) {
+        alert("Enter a name (at least 3 characters), valid email, password (at least 6 characters), 10-digit phone, specialty, and at least one available time.");
+        return;
+    }
 
     // Retrieve the authentication token from localStorage
     const token = localStorage.getItem("token");

@@ -36,8 +36,6 @@ async function initializePage() {
       document.getElementById("patientName").value = patientName || "You";
       document.getElementById("doctorName").value = doctorName;
       document.getElementById("appointmentDate").value = appointmentDate;
-      document.getElementById("appointmentTime").value = appointmentTime;
-
       const timeSelect = document.getElementById("appointmentTime");
       doctor.availableTimes.forEach(time => {
         const option = document.createElement("option");
@@ -45,6 +43,11 @@ async function initializePage() {
         option.textContent = time;
         timeSelect.appendChild(option);
       });
+      const normalizedAppointmentTime = (appointmentTime || "").slice(0, 5);
+      const matchingTime = Array.from(timeSelect.options).find(option =>
+        option.value.split('-')[0].trim().slice(0, 5) === normalizedAppointmentTime
+      );
+      if (matchingTime) timeSelect.value = matchingTime.value;
 
       // Handle form submission for updating the appointment
       document.getElementById("updateAppointmentForm").addEventListener("submit", async (e) => {
@@ -52,17 +55,17 @@ async function initializePage() {
 
         const date = document.getElementById("appointmentDate").value;
         const time = document.getElementById("appointmentTime").value;
-        const startTime = time.split('-')[0];
         if (!date || !time) {
           alert("Please select both date and time.");
           return;
         }
+        const startTime = time.split('-')[0].trim();
 
         const updatedAppointment = {
           id: appointmentId,
           doctor: { id: doctor.id },
           patient: { id: patientId },
-          appointmentTime: `${date}T${startTime}:00`,
+          appointmentTime: `${date}T${startTime.length === 5 ? `${startTime}:00` : startTime}`,
           status: 0
         };
 

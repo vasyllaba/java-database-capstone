@@ -1,5 +1,6 @@
 package com.project.back_end.services;
 
+import com.project.back_end.DTO.AppointmentDTO;
 import com.project.back_end.models.Appointment;
 import com.project.back_end.models.Doctor;
 import com.project.back_end.models.Patient;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
 public class AppointmentService {
@@ -147,6 +149,45 @@ public class AppointmentService {
                     doctor.getId(), startOfDay, endOfDay);
         }
 
+        List<AppointmentDTO> appointmentDTOs = appointments.stream()
+                .map(app -> new AppointmentDTO(
+                        app.getId(),
+                        app.getDoctor().getId(),
+                        app.getDoctor().getName(),
+                        app.getPatient().getId(),
+                        app.getPatient().getName(),
+                        app.getPatient().getEmail(),
+                        app.getPatient().getPhone(),
+                        app.getPatient().getAddress(),
+                        app.getAppointmentTime(),
+                        app.getStatus()
+                ))
+                .collect(Collectors.toList());
+        result.put("appointments", appointmentDTOs);
+        return result;
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, Object> getPatientAppointmentsForDoctor(Long patientId, String token) {
+        String doctorEmail = tokenService.extractEmail(token);
+        List<AppointmentDTO> appointments = appointmentRepository
+                .findByPatientIdAndDoctorEmail(patientId, doctorEmail)
+                .stream()
+                .map(app -> new AppointmentDTO(
+                        app.getId(),
+                        app.getDoctor().getId(),
+                        app.getDoctor().getName(),
+                        app.getPatient().getId(),
+                        app.getPatient().getName(),
+                        app.getPatient().getEmail(),
+                        app.getPatient().getPhone(),
+                        app.getPatient().getAddress(),
+                        app.getAppointmentTime(),
+                        app.getStatus()
+                ))
+                .collect(Collectors.toList());
+
+        Map<String, Object> result = new HashMap<>();
         result.put("appointments", appointments);
         return result;
     }

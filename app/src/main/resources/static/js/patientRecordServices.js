@@ -15,6 +15,7 @@ async function initializePage() {
   try {
     if (!token) throw new Error("No token found");
 
+    if (!tableBody || !patientId || !doctorId) throw new Error("Patient or doctor details are missing from the page URL.");
     const appointmentData = await getPatientAppointments(patientId, token, "doctor") || [];
 
     // Filter by both patientId and doctorId
@@ -29,6 +30,7 @@ async function initializePage() {
 }
 
 function renderAppointments(appointments) {
+  if (!tableBody) return;
   tableBody.innerHTML = "";
 
   const actionTh = document.querySelector("#patientTable thead tr th:last-child");

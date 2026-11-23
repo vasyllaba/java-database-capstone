@@ -38,10 +38,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Now, check if the prescription exists in the response and access it from the array
       if (response.prescription && response.prescription.length > 0) {
         const existingPrescription = response.prescription[0]; // Access first prescription object
-        patientNameInput.value = existingPrescription.patientName || YOU;
-        medicinesInput.value = existingPrescription.medication || "";
-        dosageInput.value = existingPrescription.dosage || "";
-        notesInput.value = existingPrescription.doctorNotes || "";
+        if (patientNameInput) patientNameInput.value = existingPrescription.patientName || patientName || "";
+        if (medicinesInput) medicinesInput.value = existingPrescription.medication || "";
+        if (dosageInput) dosageInput.value = existingPrescription.dosage || "";
+        if (notesInput) notesInput.value = existingPrescription.doctorNotes || "";
       }
 
     } catch (error) {
@@ -50,14 +50,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   if (mode === 'view') {
     // Make fields read-only
-    patientNameInput.disabled = true;
-    medicinesInput.disabled = true;
-    dosageInput.disabled = true;
-    notesInput.disabled = true;
-    savePrescriptionBtn.style.display = "none";  // Hide the save button
+    if (patientNameInput) patientNameInput.disabled = true;
+    if (medicinesInput) medicinesInput.disabled = true;
+    if (dosageInput) dosageInput.disabled = true;
+    if (notesInput) notesInput.disabled = true;
+    if (savePrescriptionBtn) savePrescriptionBtn.style.display = "none";
   }
   // Save prescription on button click
-  savePrescriptionBtn.addEventListener('click', async (e) => {
+  savePrescriptionBtn?.addEventListener('click', async (e) => {
     e.preventDefault();
 
     const prescription = {

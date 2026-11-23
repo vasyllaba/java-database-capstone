@@ -5,14 +5,25 @@ import { filterDoctors } from './services/doctorServices.js';
 import { bookAppointment } from './services/appointmentRecordService.js';
 
 
-document.addEventListener("DOMContentLoaded", () => {
+function initializeLoggedPatientDashboard() {
+  if (document.title !== "LoggedPatientDashboard") return;
   loadDoctorCards();
-});
+  document.getElementById("searchBar")?.addEventListener("input", filterDoctorsOnChange);
+  document.getElementById("filterTime")?.addEventListener("change", filterDoctorsOnChange);
+  document.getElementById("filterSpecialty")?.addEventListener("change", filterDoctorsOnChange);
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializeLoggedPatientDashboard, { once: true });
+} else {
+  initializeLoggedPatientDashboard();
+}
 
 function loadDoctorCards() {
   getDoctors()
     .then(doctors => {
       const contentDiv = document.getElementById("content");
+      if (!contentDiv) return;
       contentDiv.innerHTML = "";
 
       doctors.forEach(doctor => {
@@ -26,8 +37,10 @@ function loadDoctorCards() {
 }
 
 export function showBookingOverlay(e, doctor, patient) {
-  const button = e.target;
-  const rect = button.getBoundingClientRect();
+  if (!patient) {
+    alert("Could not load patient details. Please log in again.");
+    return;
+  }
   console.log(patient.name)
   console.log(patient)
   const ripple = document.createElement("div");
@@ -63,11 +76,15 @@ export function showBookingOverlay(e, doctor, patient) {
     const date = modalApp.querySelector("#appointment-date").value;
     const time = modalApp.querySelector("#appointment-time").value;
     const token = localStorage.getItem("token");
-    const startTime = time.split('-')[0];
+    if (!date || !time) {
+      alert("Please select a date and available time.");
+      return;
+    }
+    const startTime = time.split('-')[0].trim();
     const appointment = {
       doctor: { id: doctor.id },
       patient: { id: patient.id },
-      appointmentTime: `${date}T${startTime}:00`,
+      appointmentTime: `${date}T${startTime.length === 5 ? `${startTime}:00` : startTime}`,
       status: 0
     };
 
@@ -86,17 +103,10 @@ export function showBookingOverlay(e, doctor, patient) {
 
 
 
-// Filter Input
-document.getElementById("searchBar").addEventListener("input", filterDoctorsOnChange);
-document.getElementById("filterTime").addEventListener("change", filterDoctorsOnChange);
-document.getElementById("filterSpecialty").addEventListener("change", filterDoctorsOnChange);
-
-
-
 function filterDoctorsOnChange() {
-  const searchBar = document.getElementById("searchBar").value.trim();
-  const filterTime = document.getElementById("filterTime").value;
-  const filterSpecialty = document.getElementById("filterSpecialty").value;
+  const searchBar = document.getElementById("searchBar")?.value.trim() || "";
+  const filterTime = document.getElementById("filterTime")?.value || "";
+  const filterSpecialty = document.getElementById("filterSpecialty")?.value || "";
 
 
   const name = searchBar.length > 0 ? searchBar : null;
@@ -105,8 +115,9 @@ function filterDoctorsOnChange() {
 
   filterDoctors(name, time, specialty)
     .then(response => {
-      const doctors = response.doctors;
+      const doctors = Array.isArray(response) ? response : (response?.doctors || []);
       const contentDiv = document.getElementById("content");
+      if (!contentDiv) return;
       contentDiv.innerHTML = "";
 
       if (doctors.length > 0) {
@@ -128,6 +139,7 @@ function filterDoctorsOnChange() {
 
 export function renderDoctorCards(doctors) {
   const contentDiv = document.getElementById("content");
+  if (!contentDiv) return;
   contentDiv.innerHTML = "";
 
   doctors.forEach(doctor => {

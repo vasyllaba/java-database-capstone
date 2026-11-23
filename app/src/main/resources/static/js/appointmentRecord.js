@@ -6,6 +6,7 @@ const tableBody = document.getElementById("patientTableBody");
 const filterSelect = document.getElementById("appointmentFilter");
 
 async function loadAppointments(filter = "upcoming") {
+  if (!tableBody) return;
   const appointments = await getAppointmentRecord();
 
   if (!appointments || appointments.length === 0) {
@@ -17,9 +18,9 @@ async function loadAppointments(filter = "upcoming") {
   let filteredAppointments = appointments;
 
   if (filter === "upcoming") {
-    filteredAppointments = appointments.filter(app => new Date(app.date) >= today);
+    filteredAppointments = appointments.filter(app => new Date(app.appointmentDate) >= today);
   } else if (filter === "past") {
-    filteredAppointments = appointments.filter(app => new Date(app.date) < today);
+    filteredAppointments = appointments.filter(app => new Date(app.appointmentDate) < today);
   }
 
   if (filteredAppointments.length === 0) {
@@ -35,7 +36,7 @@ async function loadAppointments(filter = "upcoming") {
 }
 
 // Handle filter change
-filterSelect.addEventListener("change", (e) => {
+filterSelect?.addEventListener("change", (e) => {
   const selectedFilter = e.target.value;
   loadAppointments(selectedFilter);
 });

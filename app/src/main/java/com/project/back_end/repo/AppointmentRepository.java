@@ -39,6 +39,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     // 4. Find all appointments for a specific patient
     List<Appointment> findByPatientId(Long patientId);
 
+    @Query("SELECT a FROM Appointment a JOIN FETCH a.patient p JOIN FETCH a.doctor d WHERE p.id = :patientId AND d.email = :doctorEmail ORDER BY a.appointmentTime ASC")
+    List<Appointment> findByPatientIdAndDoctorEmail(
+            @Param("patientId") Long patientId,
+            @Param("doctorEmail") String doctorEmail
+    );
+
     // 5. Retrieve appointments for a patient by status, ordered by appointment time
     List<Appointment> findByPatient_IdAndStatusOrderByAppointmentTimeAsc(Long patientId, int status);
 

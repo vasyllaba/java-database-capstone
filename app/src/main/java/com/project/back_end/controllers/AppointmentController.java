@@ -40,6 +40,22 @@ public class AppointmentController {
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 
+    @GetMapping("/patient/{patientId}/{token}")
+    public ResponseEntity<?> getPatientAppointmentsForDoctor(
+            @PathVariable Long patientId,
+            @PathVariable String token) {
+
+        ResponseEntity<?> tokenValidation = service.validateToken(token, "doctor");
+        if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
+            return tokenValidation;
+        }
+
+        return new ResponseEntity<>(
+                appointmentService.getPatientAppointmentsForDoctor(patientId, token),
+                HttpStatus.OK
+        );
+    }
+
     @PostMapping("/{token}")
     public ResponseEntity<?> bookAppointment(
             @RequestBody Appointment appointment,

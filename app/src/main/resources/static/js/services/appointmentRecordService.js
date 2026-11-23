@@ -1,16 +1,29 @@
 // appointmentRecordService.js
 import { API_BASE_URL } from "../config/config.js";
+import { getPatientAppointments, getPatientData } from "./patientServices.js";
 const APPOINTMENT_API = `${API_BASE_URL}/appointments`;
 
+export async function getAppointmentRecord() {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("No patient session found.");
+
+  const patient = await getPatientData(token);
+  if (!patient?.id) throw new Error("Could not load patient details.");
+
+  const appointments = await getPatientAppointments(patient.id, token, "patient");
+  if (!Array.isArray(appointments)) throw new Error("Could not load appointment records.");
+  return appointments;
+}
 
 //This is for the doctor to get all the patient Appointments
 export async function getAllAppointments(date, patientName, token) {
-  const response = await fetch(`${APPOINTMENT_API}/${date}/${patientName}/${token}`);
+  const response = await fetch(`${APPOINTMENT_API}/${encodeURIComponent(date)}/${encodeURIComponent(patientName || "null")}/${encodeURIComponent(token)}`);
+  const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error("Failed to fetch appointments");
+    throw new Error(data.message || `Failed to fetch appointments (${response.status})`);
   }
 
-  return await response.json();
+  return Array.isArray(data.appointments) ? data.appointments : [];
 }
 
 export async function bookAppointment(appointment, token) {

@@ -81,8 +81,8 @@ function redirectToUpdatePage(appointment) {
 
 
 // Search and Filter Listeners
-document.getElementById("searchBar").addEventListener("input", handleFilterChange);
-document.getElementById("appointmentFilter").addEventListener("change", handleFilterChange);
+document.getElementById("searchBar")?.addEventListener("input", handleFilterChange);
+document.getElementById("appointmentFilter")?.addEventListener("change", handleFilterChange);
 
 async function handleFilterChange() {
   const searchBarValue = document.getElementById("searchBar").value.trim();

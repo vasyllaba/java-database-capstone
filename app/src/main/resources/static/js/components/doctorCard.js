@@ -86,6 +86,7 @@ export function createDoctorCard(doctor) {
             
             try {
                 const patientData = await getPatientData(token);
+                if (!patientData) throw new Error("Patient details were not returned by the server.");
                 showBookingOverlay(e, doctor, patientData);
             } catch (error) {
                 console.error("Error fetching patient data:", error);

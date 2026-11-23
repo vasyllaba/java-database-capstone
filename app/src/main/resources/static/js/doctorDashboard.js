@@ -65,7 +65,7 @@ async function loadAppointments() {
                 email: appointment.patientEmail,
                 appointmentId: appointment.id 
             };
-            const row = createPatientRow(patientData);
+            const row = createPatientRow(patientData, appointment.id, appointment.doctorId);
             patientTableBody.appendChild(row);
         });
 
