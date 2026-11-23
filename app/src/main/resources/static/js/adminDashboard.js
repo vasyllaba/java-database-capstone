@@ -1,6 +1,5 @@
 /* adminDashboard.js */
 
-import { openModal } from './components/modals.js';
 import { getDoctors, filterDoctors, saveDoctor } from './services/doctorServices.js';
 import { createDoctorCard } from './components/doctorCard.js';
 
@@ -8,14 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. Load all doctor cards on page load
     loadDoctorCards();
 
-    // 2. Attach a click listener to the "Add Doctor" button (using event delegation since it's dynamically rendered in header.js)
-    document.body.addEventListener('click', (e) => {
-        if (e.target && e.target.id === 'addDocBtn') {
-            openModal('addDoctor');
-        }
-    });
-
-    // 3. Attach 'input' and 'change' event listeners to the search bar and filter dropdowns
+    // 2. Attach 'input' and 'change' event listeners to the search bar and filter dropdowns
     const searchBar = document.getElementById("searchBar");
     // Supporting both the lab instructions IDs and the HTML IDs we built earlier
     const timeFilter = document.getElementById("timeFilter") || document.getElementById("filterTime");

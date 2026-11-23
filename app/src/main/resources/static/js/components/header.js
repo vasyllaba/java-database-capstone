@@ -42,7 +42,7 @@ function renderHeader() {
     // Add Role-Specific Header Content
     if (role === "admin") {
         headerContent += `
-            <button id="addDocBtn" class="adminBtn" onclick="openModal('addDoctor')">Add Doctor</button>
+            <button id="addDocBtn" class="adminBtn" type="button">Add Doctor</button>
             <a href="#" onclick="logout()">Logout</a>`;
     } else if (role === "doctor") {
         headerContent += `
@@ -73,8 +73,19 @@ function renderHeader() {
 
 // Helper Functions
 function attachHeaderButtonListeners() {
+    const addDoctorBtn = document.getElementById("addDocBtn");
     const loginBtn = document.getElementById("patientLogin");
     const signupBtn = document.getElementById("patientSignup");
+
+    if (addDoctorBtn) {
+        addDoctorBtn.addEventListener("click", () => {
+            if (typeof window.openModal === "function") {
+                window.openModal("addDoctor");
+            } else {
+                console.error("Add Doctor modal module did not load.");
+            }
+        });
+    }
 
     if (loginBtn) {
         loginBtn.addEventListener("click", () => {
