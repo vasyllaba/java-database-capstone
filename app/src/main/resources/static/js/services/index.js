@@ -3,12 +3,13 @@
 import { openModal } from '../components/modals.js';
 import { API_BASE_URL } from '../config/config.js';
 
-const ADMIN_API = API_BASE_URL + '/admin/login';
+const ADMIN_API = API_BASE_URL + '/admin';
 const DOCTOR_API = API_BASE_URL + '/doctor/login';
 
-window.onload = function () {
-    const adminBtn = document.getElementById('adminLogin');
-    const doctorBtn = document.getElementById('doctorLogin');
+document.addEventListener('DOMContentLoaded', () => {
+    const adminBtn = document.getElementById('adminBtn');
+    const doctorBtn = document.getElementById('doctorBtn');
+    const patientBtn = document.getElementById('patientBtn');
 
     if (adminBtn) {
         adminBtn.addEventListener('click', () => {
@@ -21,7 +22,13 @@ window.onload = function () {
             openModal('doctorLogin');
         });
     }
-};
+
+    if (patientBtn) {
+        patientBtn.addEventListener('click', () => {
+            window.selectRole('patient');
+        });
+    }
+});
 
 window.adminLoginHandler = async function() {
     const usernameInput = document.getElementById('adminUsername');
@@ -45,11 +52,7 @@ window.adminLoginHandler = async function() {
             const data = await response.json();
             localStorage.setItem('token', data.token);
             
-            if (typeof selectRole === 'function') {
-                selectRole('admin');
-            } else if (window.selectRole) {
-                window.selectRole('admin');
-            }
+            window.selectRole('admin');
         } 
         else {
             alert("Invalid credentials!");
@@ -82,11 +85,7 @@ window.doctorLoginHandler = async function() {
             const data = await response.json();
             localStorage.setItem('token', data.token);
             
-            if (typeof selectRole === 'function') {
-                selectRole('doctor');
-            } else if (window.selectRole) {
-                window.selectRole('doctor');
-            }
+            window.selectRole('doctor');
         } 
         else {
             alert("Invalid credentials!");
