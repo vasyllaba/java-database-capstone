@@ -33,8 +33,7 @@ public class AppointmentController {
 
         ResponseEntity<?> tokenValidation = service.validateToken(token, "doctor");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
-            Map<String, Object> errorResponse = new HashMap<>(tokenValidation.getBody());
-            return new ResponseEntity<>(errorResponse, tokenValidation.getStatusCode());
+            return tokenValidation;
         }
 
         Map<String, Object> appointments = appointmentService.getAppointment(patientName, date, token);

@@ -35,8 +35,7 @@ public class DoctorController {
 
         ResponseEntity<?> tokenValidation = service.validateToken(token, user);
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
-            Map<String, Object> errorResponse = new HashMap<>(tokenValidation.getBody());
-            return new ResponseEntity<>(errorResponse, tokenValidation.getStatusCode());
+            return tokenValidation;
         }
 
         List<String> availability = doctorService.getDoctorAvailability(doctorId, date);

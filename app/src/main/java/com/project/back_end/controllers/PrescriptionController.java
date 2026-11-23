@@ -52,8 +52,7 @@ public class PrescriptionController {
 
         ResponseEntity<?> tokenValidation = service.validateToken(token, "doctor");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
-            Map<String, Object> errorResponse = new HashMap<>(tokenValidation.getBody());
-            return new ResponseEntity<>(errorResponse, tokenValidation.getStatusCode());
+            return tokenValidation;
         }
 
         return prescriptionService.getPrescription(appointmentId);

@@ -27,8 +27,7 @@ public class PatientController {
     public ResponseEntity<?> getPatient(@PathVariable String token) {
         ResponseEntity<?> tokenValidation = service.validateToken(token, "patient");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
-            Map<String, Object> errorResponse = new HashMap<>(tokenValidation.getBody());
-            return new ResponseEntity<>(errorResponse, tokenValidation.getStatusCode());
+            return tokenValidation;
         }
 
         return patientService.getPatientDetails(token);
@@ -66,8 +65,7 @@ public class PatientController {
 
         ResponseEntity<?> tokenValidation = service.validateToken(token, "patient");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
-            Map<String, Object> errorResponse = new HashMap<>(tokenValidation.getBody());
-            return new ResponseEntity<>(errorResponse, tokenValidation.getStatusCode());
+            return tokenValidation;
         }
 
         return patientService.getPatientAppointment(id, token);
@@ -81,8 +79,7 @@ public class PatientController {
 
         ResponseEntity<?> tokenValidation = service.validateToken(token, "patient");
         if (!tokenValidation.getStatusCode().is2xxSuccessful()) {
-            Map<String, Object> errorResponse = new HashMap<>(tokenValidation.getBody());
-            return new ResponseEntity<>(errorResponse, tokenValidation.getStatusCode());
+            return tokenValidation;
         }
 
         return service.filterPatient(condition, name, token);
