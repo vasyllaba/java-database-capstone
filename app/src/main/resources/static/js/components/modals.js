@@ -21,7 +21,7 @@ export function openModal(type) {
                           <option value="oncologist">Oncologist</option>
                           <option value="gastroenterologist">Gastroenterologist</option>
                           <option value="general">General Physician</option>
-  
+
           </select>
           <input type="email" id="doctorEmail" placeholder="Email" class="input-field">
           <input type="password" id="doctorPassword" placeholder="Password" class="input-field">
@@ -80,11 +80,11 @@ export function openModal(type) {
     };
   
     if (type === "patientSignup") {
-      document.getElementById("signupBtn").addEventListener("click", signupPatient);
+    document.getElementById("signupBtn").addEventListener("click", window.signupPatient);
     }
   
     if (type === "patientLogin") {
-      document.getElementById("loginBtn").addEventListener("click", loginPatient);
+    document.getElementById("loginBtn").addEventListener("click", window.loginPatient);
     }
   
     if (type === 'addDoctor') {
@@ -99,4 +99,6 @@ export function openModal(type) {
       document.getElementById('doctorLoginBtn').addEventListener('click', doctorLoginHandler);
     }
   }
-  
+
+// The classic header script needs a window-level function to open these modals.
+window.openModal = openModal;

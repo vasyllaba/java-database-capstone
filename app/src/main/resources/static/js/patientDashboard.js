@@ -1,22 +1,11 @@
 /* patientDashboard.js */
 
 import { getDoctors, filterDoctors } from './services/doctorServices.js';
-import { openModal } from './components/modals.js';
 import { createDoctorCard } from './components/doctorCard.js';
 import { patientSignup, patientLogin } from './services/patientServices.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     loadDoctorCards();
-
-    // Bind Modal Triggers for Login and Signup
-    // Since the header is dynamically injected, it's safer to use event delegation or wait for rendering
-    document.body.addEventListener('click', (e) => {
-        if (e.target && e.target.id === 'patientSignup') {
-            openModal("patientSignup");
-        } else if (e.target && e.target.id === 'patientLogin') {
-            openModal("patientLogin");
-        }
-    });
 
     // Search and Filter Logic setup
     const searchBar = document.getElementById("searchBar");
@@ -114,18 +103,14 @@ window.loginPatient = async function (event) {
         
         if (response.ok) {
             const result = await response.json();
-            
-            // Handle role selection
-            if (typeof selectRole === 'function') {
-                selectRole('loggedPatient');
-            } else if (window.selectRole) {
+
+            localStorage.setItem('token', result.token);
+            if (typeof window.selectRole === 'function') {
                 window.selectRole('loggedPatient');
             } else {
                 localStorage.setItem("userRole", "loggedPatient");
+                window.location.href = '/pages/loggedPatientDashboard.html';
             }
-            
-            localStorage.setItem('token', result.token);
-            window.location.href = '/pages/loggedPatientDashboard.html';
         } else {
             alert('❌ Invalid credentials!');
         }

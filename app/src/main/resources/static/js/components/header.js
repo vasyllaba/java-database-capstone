@@ -78,13 +78,13 @@ function attachHeaderButtonListeners() {
 
     if (loginBtn) {
         loginBtn.addEventListener("click", () => {
-            if (typeof openModal === "function") openModal("patientLogin");
+            if (typeof window.openModal === "function") window.openModal("patientLogin");
         });
     }
 
     if (signupBtn) {
         signupBtn.addEventListener("click", () => {
-            if (typeof openModal === "function") openModal("patientSignup");
+            if (typeof window.openModal === "function") window.openModal("patientSignup");
         });
     }
 }

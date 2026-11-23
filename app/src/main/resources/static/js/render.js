@@ -2,9 +2,10 @@
 
 window.selectRole = function (role) {
     const normalizedRole = String(role).toLowerCase();
-    setRole(normalizedRole);
+    const storedRole = normalizedRole === "loggedpatient" ? "loggedPatient" : normalizedRole;
+    setRole(storedRole);
     const token = localStorage.getItem('token');
-  
+
     if (normalizedRole === "admin" && token) {
       window.location.href = `/adminDashboard/${token}`;
     } else if (normalizedRole === "doctor" && token) {
@@ -24,4 +25,3 @@ window.selectRole = function (role) {
       return;
     }
   }
-  
